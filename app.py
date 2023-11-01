@@ -1,9 +1,20 @@
 import streamlit as st
 import pandas as pd
-import pickle
+import joblib
+import gzip
 
-# Load the Random Forest model from the pickle file
-model = pickle.load(open('mejor_modelo_random_forest.pkl', 'rb'))
+# Nombre del archivo comprimido
+archivo_comprimido = 'mejor_modelo_random_forest.pkl.gz'
+
+# Nombre del archivo descomprimido (sin la extensión .gz)
+archivo_descomprimido = 'mejor_modelo_random_forest.pkl'
+
+# Descomprime el archivo
+with gzip.open(archivo_comprimido, 'rb') as f_in, open(archivo_descomprimido, 'wb') as f_out:
+    f_out.write(f_in.read())
+
+# Carga el modelo desde el archivo descomprimido
+model = joblib.load(archivo_descomprimido)
 
 # Define the columns for user input
 columns = ['PRIMA_ANUAL', 'EDAD', 'INDEPENDIENTE', 'FORMA_PAGO_CAJA']
